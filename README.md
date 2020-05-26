@@ -1,6 +1,6 @@
 # remoteThermometer-desktop
 
-###How to test:
+### How to test:
 
 * Open PowerShell as Admin
 * If this is your first time, do the following:
