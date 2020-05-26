@@ -7,4 +7,4 @@
   * Run "pip install wmi" in PowerShell (Used to read temperatures)
   * Run "pip install pygubu" in PowerShell (Used for GUI - may cause compile errors without it)
   * Optional: Set OpenHardwareMonitor to "launch minimized" (Hides OpenHardwareMonitor in the background during execution)
-* Navigate to the project folder and enter "python main.py"
+* Navigate to the project folder and enter "python Main.py"
