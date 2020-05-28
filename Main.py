@@ -11,6 +11,7 @@
 
 #Import libraries
 from Temperature import temperatureChecker
+from APILibrary import *
 import tkinter as tk
 import pygubu
 
@@ -63,6 +64,13 @@ if temperature_infos == None:
 #temperature_array = checker.getTemps()
 #This does the same as getTemps() but has popups to show the CPU and GPU temperatures
 temperature_array = checker.displayTemps()
+
+#Parse the output into json
+print("Building JSON")
+#Turns the array into JSON, from APILibrary
+JSONOutput = makeJSON(temperature_array)
+print(JSONOutput)
+    
 #Always run this when you're finished with the class, it ends the extra process
 checker.close()
 

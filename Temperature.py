@@ -19,26 +19,26 @@ class temperatureChecker:
     #Stores the WMI and OpenHardwareMonitor data
     temperature_infos = None
     w = None
-    debug = False
+    debugMode = False
     
     def debug(self, value):
         if (value == True):
-            self.debug = True
+            self.debugMode = True
         else:
-            self.debug = False
+            self.debugMode = False
     
     #Run this first
     def begin(self):
         try:
             #Load OpenHardwareMonitor. This finds system info such as the temperatures
-            if self.debug == True:
+            if self.debugMode == True:
                 print("Initializing...");
                 print("Launching OpenHardwareMonitor...");
             os.startfile(os.path.join(os.getcwd(), './OpenHardwareMonitor/OpenHardwareMonitor.exe'))
             #Give it time to start. We might clean this up later as it can be a bit buggy, particularly on slower machince
             time.sleep(5)
             #Use WMI to connect to OpenHardwareMonitor
-            if self.debug == True:
+            if self.debugMode == True:
                 print("Pulling Temperature...");
             self.w = wmi.WMI(namespace="root\OpenHardwareMonitor")
             self.temperature_infos = self.w.Sensor()
@@ -56,7 +56,7 @@ class temperatureChecker:
         #For each temperature that can be read, list them and save the relevant ones
         for sensor in self.temperature_infos:
             if sensor.SensorType==u'Temperature':
-                if self.debug == True:
+                if self.debugMode == True:
                     print(sensor.Name)
                     print(sensor.Value)
                 if sensor.Name == "CPU Package":
@@ -67,7 +67,7 @@ class temperatureChecker:
         temperature_array = [cpuTemp, gpuTemp]
         return temperature_array
        
-    #Display the temperatures, mostly here for debugging
+    #Display the temperatures, mostly here for debugModeging
     def displayTemps(self):
         temperature_array = self.getTemps()
         cpuTemp = temperature_array[0]
@@ -81,7 +81,7 @@ class temperatureChecker:
 
     def close(self):
         #Close OpenHardwareMonitor. If we don't, multiple instances may run next time which can cause problems
-        if self.debug == True:
+        if self.debugMode == True:
             print("Closing OpenHardwareMonitor...");
         os.system("taskkill /f /im  OpenHardwareMonitor.exe")
 
