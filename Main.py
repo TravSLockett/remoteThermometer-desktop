@@ -14,6 +14,7 @@ from Temperature import temperatureChecker
 from APILibrary import *
 import tkinter as tk
 import pygubu
+import webbrowser
 
 class Application:
  
@@ -70,7 +71,11 @@ print("Building JSON")
 #Turns the array into JSON, from APILibrary
 JSONOutput = makeJSON(temperature_array)
 print(JSONOutput)
-    
+
+#Uncomment the lines below to test the API
+#site = 'http://IPADDRESS:PORT/' + JSONOutput
+#webbrowser.open(site, new = 2)
+
 #Always run this when you're finished with the class, it ends the extra process
 checker.close()
 
