@@ -36,22 +36,34 @@ class Application:
         temperature_array = self.checker.getTemps()
         self.textField = self.builder.get_object('outputBox')
         self.textField.delete(1.0, tk.END)
-        TemperatureOutputs = f"CPU Temperature: \n{temperature_array[0]} \n\nGPU Temperature: \n{temperature_array[1]}"
+        TemperatureOutputs = f"CPU Temperature: {temperature_array[0]} \nGPU Temperature: {temperature_array[1]}"
         self.textField.insert(tk.END, TemperatureOutputs)
+        
+        self.textField.insert(tk.END, "\nData Sent To Server...\n")
+        #Prepare the JSON
+        JSONOutput = makeJSON(temperature_array)
+        #Contact the server
+        reply = sendDataToServer(JSONOutput)
+        if (reply == None):
+            self.textField.insert(tk.END, "Server Error (See Console)")
+        else:
+            self.textField.insert(tk.END, "Server Reply:\n")
+            self.textField.insert(tk.END, reply.text)
+        
         
     #Close temperature checker and quit
     def QuitApp(self):
         self.checker.close()
         self.master.quit()
 
-"""
+
 #Launch the GUI
 root = tk.Tk()
 app = Application(root)
 root.mainloop()
+
+
 """
-
-
 #Load in the temperature class from Temperature.py
 checker = temperatureChecker()
 #Set Debug to true, shows a more verbose output for testing, we'll turn this off later
@@ -80,5 +92,5 @@ print(reply.text)
 #Always run this when you're finished with the class, it ends the extra process
 checker.close()
 
-
+"""
 
