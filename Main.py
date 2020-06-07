@@ -70,11 +70,12 @@ temperature_array = checker.displayTemps()
 print("Building JSON")
 #Turns the array into JSON, from APILibrary
 JSONOutput = makeJSON(temperature_array)
+print("JSON is:")
 print(JSONOutput)
-
-#Uncomment the lines below to test the API
-#site = 'http://IPADDRESS:PORT/' + JSONOutput
-#webbrowser.open(site, new = 2)
+print("Contacting the server:")
+reply = sendDataToServer(JSONOutput)
+print("The server's reply:")
+print(reply.text)
 
 #Always run this when you're finished with the class, it ends the extra process
 checker.close()

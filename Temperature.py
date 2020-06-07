@@ -50,8 +50,8 @@ class temperatureChecker:
     def getTemps(self):
         self.temperature_infos = self.w.Sensor()
         #These variables will store the temperatures. I made sure they initialize as floats
-        cpuTemp = float(-100)
-        gpuTemp = float(-100)
+        cpuTemp = float(0)
+        gpuTemp = float(0)
 
         #For each temperature that can be read, list them and save the relevant ones
         for sensor in self.temperature_infos:
@@ -73,9 +73,9 @@ class temperatureChecker:
         cpuTemp = temperature_array[0]
         gpuTemp = temperature_array[1]
         #Tell the user CPU and GPU temperatures if they exist
-        if cpuTemp != -100:
+        if cpuTemp != 0:
             ctypes.windll.user32.MessageBoxW(0, f"Your CPU temperature is {cpuTemp}C", "CPU", 1)
-        if gpuTemp != -100:
+        if gpuTemp != 0:
             ctypes.windll.user32.MessageBoxW(0, f"Your GPU temperature is {gpuTemp}C", "GPU", 1)
         return temperature_array
 
