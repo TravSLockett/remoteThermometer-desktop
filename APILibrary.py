@@ -11,7 +11,7 @@ def makeJSON(temperature_array):
 def sendDataToServer(JSONInput):
     #Try to connect to the server, send the data and return a reply
     try: 
-        url = 'http://[IP_ADDRESS]:3000/api/post'
+        url = 'http://[IP]:1205/user/push'
         myobj = JSONInput
         x = requests.post(url, data = JSONInput)
         return x
