@@ -36,7 +36,7 @@ class temperatureChecker:
                 print("Launching OpenHardwareMonitor...");
             os.startfile(os.path.join(os.getcwd(), './OpenHardwareMonitor/OpenHardwareMonitor.exe'))
             #Give it time to start. We might clean this up later as it can be a bit buggy, particularly on slower machince
-            time.sleep(5)
+            time.sleep(2)
             #Use WMI to connect to OpenHardwareMonitor
             if self.debugMode == True:
                 print("Pulling Temperature...");
