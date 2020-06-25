@@ -5,11 +5,24 @@ const si = require("systeminformation");
 
 //USING SI LIBRARY TO GET SYSTEM INFO
 //PLAY W IT
-si.cpu()
+si.battery()
   .then((data) => {
     console.log(data);
   })
   .catch((error) => console.error(error));
+
+router.get("/post", (req, res) => {
+  var returnData;
+  //whatever you wnat it to happen
+  si.battery()
+    .then((data) => {
+      console.log(data);
+      //res.send(data);
+      returnData = data;
+    })
+    .catch((error) => console.error(error));
+  res.send(returnData);
+});
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
@@ -29,8 +42,8 @@ router.get("/", function (req, res, next) {
       console.log(body);
       console.log(res.statusCode);
     }
-  );*/
-
+  );
+*/
   //TESTING POST CPU AND GPU TEMPS TO HOME SERVER
   /*
   request.post(
@@ -45,7 +58,8 @@ router.get("/", function (req, res, next) {
       console.log(body);
       console.log(res.statusCode);
     }
-  );*/
+  );
+  */
 });
 
 module.exports = router;
