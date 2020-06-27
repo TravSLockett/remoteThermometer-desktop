@@ -30,11 +30,18 @@ router.get("/cpuTemp", (req, res) => {
     .catch((error) => console.log(error));
 });
 
-//Process Information
+//Process Information -> Returns as a JSON array
 router.get("/processes", (req, res) => {
   si.processes()
     .then((data) => {
-      res.send(data);
+      var output = [];
+      for (let process of data.list) {
+        current = {};
+        current.pid = process.pid;
+        current.name = process.name;
+        output.push(current);
+      }
+      res.send(output);
     })
     .catch((error) => console.log(error));
 });
