@@ -2,6 +2,7 @@ var express = require("express");
 var router = express.Router();
 const request = require("request");
 const si = require("systeminformation");
+const { VariantAlsoNegotiates } = require("http-errors");
 
 //Battery Information
 router.get("/bat", (req, res) => {
@@ -43,12 +44,18 @@ router.get("/cpuTemp", (req, res) => {
     .catch((error) => console.log(error));
 });
 
-//Process Information
+//Process Information -> Returns as a JSON array
 router.get("/processes", (req, res) => {
   si.processes()
     .then((data) => {
-      
-      res.send(data);
+      var output = [];
+      for (let process of data.list) {
+        current = {};
+        current.pid = process.pid;
+        current.name = process.name;
+        output.push(current);
+      }
+      res.send(output);
     })
     .catch((error) => console.log(error));
 });
@@ -57,7 +64,14 @@ router.get("/processes", (req, res) => {
 router.get("/disk", (req, res) => {
   si.fsSize()
     .then((data) => {
-      res.send(data);
+      var output = [];
+      for (let disk of data) {
+        current = {};
+        current.use = disk.use;
+        current.mount = disk.mount;
+        output.push(current);
+      }
+      res.send(output);
     })
     .catch((error) => console.log(error));
 });
