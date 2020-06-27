@@ -5,22 +5,19 @@ const si = require("systeminformation");
 
 //USING SI LIBRARY TO GET SYSTEM INFO
 //PLAY W IT
-si.battery()
-  .then((data) => {
-    console.log(data);
-  })
-  .catch((error) => console.error(error));
 
 router.get("/post", (req, res) => {
-  var returnData;
   //whatever you wnat it to happen
-  si.battery()
+  var battery = si
+    .battery()
     .then((data) => {
       console.log(data);
       //res.send(data);
       returnData = data;
     })
     .catch((error) => console.error(error));
+  returnData.BattPct = battery.percent;
+  console.log("returnData.BattPct");
   res.send(returnData);
 });
 
