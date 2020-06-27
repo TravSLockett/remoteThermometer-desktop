@@ -51,7 +51,14 @@ router.get("/processes", (req, res) => {
 router.get("/disk", (req, res) => {
   si.fsSize()
     .then((data) => {
-      res.send(data);
+      var output = [];
+      for (let disk of data) {
+        current = {};
+        current.use = disk.use;
+        current.mount = disk.mount;
+        output.push(current);
+      }
+      res.send(output);
     })
     .catch((error) => console.log(error));
 });
