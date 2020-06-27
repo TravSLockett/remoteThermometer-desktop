@@ -2,6 +2,7 @@ var express = require("express");
 var router = express.Router();
 const request = require("request");
 const si = require("systeminformation");
+const { VariantAlsoNegotiates } = require("http-errors");
 
 //Battery Information
 router.get("/bat", (req, res) => {
