@@ -7,7 +7,12 @@ const si = require("systeminformation");
 router.get("/bat", (req, res) => {
   si.battery()
     .then((data) => {
-      res.send(data);
+      //Filter out only the important data
+      const output = {
+        percent: data.percent,
+        isCharging: data.ischarging,
+      };
+      res.send(output);
     })
     .catch((error) => console.log(error));
 });
@@ -16,7 +21,15 @@ router.get("/bat", (req, res) => {
 router.get("/cpuSpec", (req, res) => {
   si.cpu()
     .then((data) => {
-      res.send(data);
+      //Filter out only the important data
+      const output = {
+        manufacturer: data.manufacturer,
+        brand: data.brand,
+        speed: data.speed,
+        speedmax: data.speedmax,
+        speedmin: data.speedmin,
+      };
+      res.send(output);
     })
     .catch((error) => console.log(error));
 });
@@ -34,12 +47,13 @@ router.get("/cpuTemp", (req, res) => {
 router.get("/processes", (req, res) => {
   si.processes()
     .then((data) => {
+      
       res.send(data);
     })
     .catch((error) => console.log(error));
 });
 
-//Drive Information (Displays infor for each drive)
+//Drive Information (Displays info for each drive)
 router.get("/disk", (req, res) => {
   si.fsSize()
     .then((data) => {
