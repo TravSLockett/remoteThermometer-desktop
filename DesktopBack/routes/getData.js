@@ -1,79 +1,45 @@
 var express = require("express");
 var router = express.Router();
 const request = require("request");
-const si = require("systeminformation");
+const system = require("../helper/systemInfoGetter");
+const APIServer = require("../helper/APIClient");
 const { VariantAlsoNegotiates } = require("http-errors");
 
 //Battery Information
-router.get("/bat", (req, res) => {
-  si.battery()
-    .then((data) => {
-      //Filter out only the important data
-      const output = {
-        percent: data.percent,
-        isCharging: data.ischarging,
-      };
-      res.send(output);
-    })
-    .catch((error) => console.log(error));
+router.get("/bat", async (req, res) => {
+  const battery = await system.getBattery();
+  res.send(battery);
 });
 
 //CPU Specs -> Does not include temperature
-router.get("/cpuSpec", (req, res) => {
-  si.cpu()
-    .then((data) => {
-      //Filter out only the important data
-      const output = {
-        manufacturer: data.manufacturer,
-        brand: data.brand,
-        speed: data.speed,
-        speedmax: data.speedmax,
-        speedmin: data.speedmin,
-      };
-      res.send(output);
-    })
-    .catch((error) => console.log(error));
+router.get("/cpuSpec", async (req, res) => {
+  const specs = await system.getCPUSpec();
+  res.send(specs);
 });
 
 //CPU Temperature -> Does not include specs
-router.get("/cpuTemp", (req, res) => {
-  si.cpuTemperature()
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((error) => console.log(error));
+router.get("/cpuTemp", async (req, res) => {
+  const temperature = await system.getCPUTemp();
+  res.send(temperature);
 });
 
 //Process Information -> Returns as a JSON array
-router.get("/processes", (req, res) => {
-  si.processes()
-    .then((data) => {
-      var output = [];
-      for (let process of data.list) {
-        current = {};
-        current.pid = process.pid;
-        current.name = process.name;
-        output.push(current);
-      }
-      res.send(output);
-    })
-    .catch((error) => console.log(error));
+router.get("/processes", async (req, res) => {
+  const process = await system.getProcesses();
+  res.send(process);
 });
 
 //Drive Information (Displays info for each drive)
-router.get("/disk", (req, res) => {
-  si.fsSize()
-    .then((data) => {
-      var output = [];
-      for (let disk of data) {
-        current = {};
-        current.use = disk.use;
-        current.mount = disk.mount;
-        output.push(current);
-      }
-      res.send(output);
-    })
-    .catch((error) => console.log(error));
+router.get("/disk", async (req, res) => {
+  const disk = await system.getDisk();
+  res.send(disk);
 });
+
+//console.log(test);
+//setInterval(test, 5000); //Every 5 seconds
+
+const token = "[Token]";
+const url = "/temp/push";
+APIServer.postRequest({ cpu: 60, gpu: 50 }, token, url);
 
 module.exports = router;
