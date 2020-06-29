@@ -3,12 +3,13 @@ const request = require("request");
 
 // url: /temp/push
 const postRequest = async (data, token, url) => {
+  console.log(await data);
   const headers = { Authorization: token };
   await request.post(
     {
       headers: headers,
       url: "http://[IP]:1205" + url,
-      json: data,
+      json: await data,
     },
 
     (err, res, body) => {

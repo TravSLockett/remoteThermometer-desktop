@@ -4,6 +4,7 @@ const request = require("request");
 const system = require("../helper/systemInfoGetter");
 const APIServer = require("../helper/APIClient");
 const { VariantAlsoNegotiates } = require("http-errors");
+const systemInfoGetter = require("../helper/systemInfoGetter");
 
 //Battery Information
 router.get("/bat", async (req, res) => {
@@ -35,11 +36,25 @@ router.get("/disk", async (req, res) => {
   res.send(disk);
 });
 
-//console.log(test);
-//setInterval(test, 5000); //Every 5 seconds
+//Get everything, package it all into a single JSON object and pass it to the API function
+const updateServer = async () => {
+  var output = {};
+  output.Battery = await system.getBattery();
+  output.CPUSpec = await system.getCPUSpec();
+  output.CPUTemp = await system.getCPUTemp();
+  output.Processes = await system.getProcesses();
+  output.Disk = await system.getDisk();
+  const token = "[Token]";
+  const url = "/temp/push";
+  APIServer.postRequest(output, token, url);
+};
 
+//setInterval(updateServer, 5000); //Every 5 seconds
+
+/*
 const token = "[Token]";
 const url = "/temp/push";
 APIServer.postRequest({ cpu: 60, gpu: 50 }, token, url);
+*/
 
 module.exports = router;
