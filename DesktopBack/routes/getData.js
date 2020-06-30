@@ -38,18 +38,24 @@ router.get("/disk", async (req, res) => {
 
 //Get everything, package it all into a single JSON object and pass it to the API function
 const updateServer = async () => {
+  //var start = new Date().getTime(); //~234ms to run everything
   var output = {};
-  output.Battery = await system.getBattery();
-  output.CPUSpec = await system.getCPUSpec();
-  output.CPUTemp = await system.getCPUTemp();
-  output.Processes = await system.getProcesses();
-  output.Disk = await system.getDisk();
+  output.Name = "Computer-Name"; //We will customize this later but for now it's just a placeholder string
+  output.Battery = await system.getBattery(); //~58ms to only post the battery info
+  output.CPUSpec = await system.getCPUSpec(); //~37ms for CPUSpec info
+  output.CPUTemp = await system.getCPUTemp(); //~17ms
+  output.Processes = await system.getProcesses(); //~134ms
+  output.Disk = await system.getDisk(); //~26ms
   const token = "[Token]";
   const url = "/temp/push";
   APIServer.postRequest(output, token, url);
+  //var end = new Date().getTime();
+  //var time = end - start;
+  //console.log("Execution time: " + time);
 };
 
-//setInterval(updateServer, 5000); //Every 5 seconds
+//setInterval(updateServer, 2000); //Every 2 seconds
+//updateServer(); <- Use this to test the function and server connection
 
 /*
 const token = "[Token]";
