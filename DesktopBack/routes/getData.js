@@ -53,19 +53,6 @@ const updateServer = async (token) => {
   //console.log("Execution time: " + time);
 };
 
-const connect = async (username, password) => {
-  const token = await APIServer.signin(username, password);
-  if (token != "FAILED") {
-    console.log(token);
-    //setInterval(updateServer(await token), 2000); //Every 2 seconds
-  } else {
-    console.log("failed");
-  }
-};
-
-//updateServer(); //<- Use this to test the function and server connection
-connect("markk", "test1");
-
 /*
 const token = "[Token]";
 const url = "/temp/push";
