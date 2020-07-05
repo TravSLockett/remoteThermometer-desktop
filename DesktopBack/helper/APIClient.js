@@ -1,5 +1,6 @@
 const system = require("../helper/systemInfoGetter");
 const request = require("request");
+var express = require("express");
 
 let IP = "localhost";
 
@@ -13,17 +14,16 @@ const postRequest = async (data, token, url) => {
       url: "http://" + IP + ":1205" + url,
       json: await data,
     },
-
     (err, res, body) => {
       if (err) {
         console.log("im in the err");
-        return console.log(err);
+        return err;
       }
       console.log("im in the body");
       console.log(res.statusCode);
       return body;
     }
-  ).headers.Authorization;
+  );
 };
 
 module.exports = { postRequest };

@@ -1,6 +1,9 @@
 var express = require("express");
 var router = express.Router();
 const request = require("request");
+const getMAC = require("getMac");
+const crypto = require("crypto");
+var bodyParser = require("body-parser");
 const system = require("../helper/systemInfoGetter");
 const APIServer = require("../helper/APIClient");
 const { VariantAlsoNegotiates } = require("http-errors");
@@ -33,14 +36,25 @@ router.get("/processes", async (req, res) => {
 //Drive Information (Displays info for each drive)
 router.get("/disk", async (req, res) => {
   const disk = await system.getDisk();
+  ``;
   res.send(disk);
+});
+
+//Send a request with a token, it will send one update to the server
+router.post("/start", async (req, res) => {
+  const token = await req.headers.authorization;
+  res.send({ Start: "Received", Token: token });
+  updateServer(await token); //Run
 });
 
 //Get everything, package it all into a single JSON object and pass it to the API function
 const updateServer = async (token) => {
   //var start = new Date().getTime(); //~234ms to run everything
   var output = {};
-  output.Name = "Computer-Name"; //We will customize this later but for now it's just a placeholder string
+  output.Name = crypto
+    .createHmac("sha256", "secret")
+    .update(getMAC.default())
+    .digest("hex"); //This is a SHA256 hash of the computer's mac address
   output.Battery = await system.getBattery(); //~58ms to only post the battery info
   output.CPUSpec = await system.getCPUSpec(); //~37ms for CPUSpec info
   output.CPUTemp = await system.getCPUTemp(); //~17ms
