@@ -36,7 +36,6 @@ router.get("/processes", async (req, res) => {
 //Drive Information (Displays info for each drive)
 router.get("/disk", async (req, res) => {
   const disk = await system.getDisk();
-  ``;
   res.send(disk);
 });
 
@@ -47,8 +46,13 @@ router.post("/start", async (req, res) => {
   updateServer(await token); //Run
 });
 
+router.get("/all", async (req, res) => {
+  const allData = await updateServer("", true);
+  res.send(allData);
+});
+
 //Get everything, package it all into a single JSON object and pass it to the API function
-const updateServer = async (token) => {
+const updateServer = async (token, returnOnly = false) => {
   //var start = new Date().getTime(); //~234ms to run everything
   var output = {};
   output.Name = crypto
@@ -61,7 +65,11 @@ const updateServer = async (token) => {
   output.Processes = await system.getProcesses(); //~134ms
   output.Disk = await system.getDisk(); //~26ms
   const url = "/temp/push";
-  APIServer.postRequest(output, token, url);
+  if ((returnOnly = false)) {
+    APIServer.postRequest(output, token, url);
+  }
+  return output;
+
   //var end = new Date().getTime();
   //var time = end - start;
   //console.log("Execution time: " + time);
